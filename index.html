@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вітаємо!</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Ласкаво просимо!</h1>
+    <p>Раді бачити вас. Для продовження натисніть кнопку нижче.</p>
+
+    <button onclick="openRegister()">Перейти до реєстрації</button>
+</div>
+
+<script>
+    function openRegister() {
+        window.location.href = "register.html";
+    }
+
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+</script>
+
+</body>
+</html>
