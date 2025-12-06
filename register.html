@@ -6,25 +6,30 @@
     <title>Реєстрація</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="container">
 
-    <h2>Реєстрація</h2>
+    <h2 class="title">Реєстрація</h2>
 
-    <input id="name" type="text" placeholder="Ваше ім'я">
+    <input id="name" type="text" placeholder="Ваше ім'я" class="input">
     <div id="err_name" class="error"></div>
 
-    <input id="email" type="email" placeholder="Email">
+    <input id="email" type="email" placeholder="Email" class="input">
     <div id="err_email" class="error"></div>
 
-    <input id="phone" type="tel" placeholder="Телефон">
+    <input id="phone" type="tel" placeholder="Телефон" class="input">
     <div id="err_phone" class="error"></div>
 
-    <input id="photo" type="file" accept="image/*">
+    <label class="file-label">
+        Оберіть фото
+        <input id="photo" type="file" accept="image/*" class="file-input">
+    </label>
+
     <img id="preview" class="preview" style="display:none">
 
-    <button onclick="sendData()">Завершити</button>
+    <button class="btn" onclick="sendData()">Завершити</button>
 
 </div>
 
@@ -32,7 +37,8 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // 📌 Перегляд фото
+
+    // === Попередній перегляд фото ===
     document.getElementById("photo").onchange = function () {
         const file = this.files[0];
         if (file) {
@@ -47,19 +53,19 @@
     };
 
 
+    // === Надсилання даних у Telegram ===
     function sendData() {
 
         let name = document.getElementById("name").value.trim();
         let email = document.getElementById("email").value.trim();
         let phone = document.getElementById("phone").value.trim();
-        let photo = document.getElementById("preview").src;
+        let photo = document.getElementById("preview").src || "";
 
         // Очищення помилок
         document.getElementById("err_name").innerText = "";
         document.getElementById("err_email").innerText = "";
         document.getElementById("err_phone").innerText = "";
 
-        // 📌 Перевірка
         let valid = true;
 
         if (!name) {
@@ -79,17 +85,15 @@
 
         if (!valid) return;
 
-        // 📌 Пакуємо дані
-        const data = {
-            name,
-            email,
-            phone,
-            photo
-        };
+        const data = { name, email, phone, photo };
 
+        // Надсилаємо дані в Telegram
         tg.sendData(JSON.stringify(data));
-        tg.close();
+
+        // Закриваємо WebApp
+        setTimeout(() => tg.close(), 200);
     }
+
 </script>
 
 </body>
