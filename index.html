@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastFood - Замовлення фастфуду</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .menu-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .menu-item h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .menu-item .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 10px 0;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #5568d3;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .cart-section, .register-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .quantity {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .order-btn:hover {
+            background: #653a8a;
+            transform: translateY(-2px);
+        }
+
+        .order-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .register-btn:hover {
+            background: #5568d3;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🍔 FastFood</div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="showMenu()">Меню</button>
+                <button class="btn btn-primary" onclick="showRegister()">Реєстрація</button>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="menu-section" id="menuSection">
+                <h2 class="section-title">Наше меню</h2>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- Меню буде додано через JavaScript -->
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="cart-section">
+                    <h2 class="section-title">Кошик</h2>
+                    <div id="cartItems">
+                        <div class="empty-cart">Кошик порожній</div>
+                    </div>
+                    <div class="cart-total hidden" id="cartTotal">
+                        <span>Всього:</span>
+                        <span id="totalPrice">0 ₴</span>
+                    </div>
+                    <button class="order-btn hidden" id="orderBtn" onclick="placeOrder()">Замовити</button>
+                </div>
+
+                <div class="register-section hidden" id="registerSection">
+                    <h2 class="section-title">Реєстрація</h2>
+                    <div id="registerMessage"></div>
+                    <form id="registerForm" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label for="name">Ім'я</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Телефон</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Адреса доставки</label>
+                            <input type="text" id="address" name="address" required>
+                        </div>
+                        <button type="submit" class="register-btn">Зареєструватися</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Дані меню
+        const menuItems = [
+            { id: 1, name: 'Бургер класичний', price: 120, image: '🍔' },
+            { id: 2, name: 'Чізбургер', price: 140, image: '🧀' },
+            { id: 3, name: 'Картопля фрі', price: 60, image: '🍟' },
+            { id: 4, name: 'Нагетси', price: 90, image: '🍗' },
+            { id: 5, name: 'Піца Маргарита', price: 180, image: '🍕' },
+            { id: 6, name: 'Кола', price: 40, image: '🥤' },
+            { id: 7, name: 'Хот-дог', price: 80, image: '🌭' },
+            { id: 8, name: 'Салат Цезар', price: 100, image: '🥗' }
+        ];
+
+        let cart = [];
+        let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+
+        // Ініціалізація
+        function init() {
+            renderMenu();
+            updateCart();
+        }
+
+        // Відображення меню
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = menuItems.map(item => `
+                <div class="menu-item">
+                    <div style="font-size: 80px; margin-bottom: 10px;">${item.image}</div>
+                    <h3>${item.name}</h3>
+                    <div class="price">${item.price} ₴</div>
+                    <button class="add-to-cart" onclick="addToCart(${item.id})">Додати до кошика</button>
+                </div>
+            `).join('');
+        }
+
+        // Додавання до кошика
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            const existingItem = cart.find(i => i.id === itemId);
+
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+
+            updateCart();
+        }
+
+        // Оновлення кошика
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const orderBtn = document.getElementById('orderBtn');
+            const totalPrice = document.getElementById('totalPrice');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Кошик порожній</div>';
+                cartTotal.classList.add('hidden');
+                orderBtn.classList.add('hidden');
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} ₴</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalPrice.textContent = `${total} ₴`;
+                cartTotal.classList.remove('hidden');
+                orderBtn.classList.remove('hidden');
+            }
+        }
+
+        // Зміна кількості
+        function changeQuantity(itemId, change) {
+            const item = cart.find(i => i.id === itemId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== itemId);
+                }
+                updateCart();
+            }
+        }
+
+        // Показати меню
+        function showMenu() {
+            document.getElementById('menuSection').classList.remove('hidden');
+            document.getElementById('registerSection').classList.add('hidden');
+        }
+
+        // Показати реєстрацію
+        function showRegister() {
+            document.getElementById('menuSection').classList.add('hidden');
+            document.getElementById('registerSection').classList.remove('hidden');
+        }
+
+        // Обробка реєстрації
+        function handleRegister(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                address: formData.get('address'),
+                registeredAt: new Date().toISOString()
+            };
+
+            registeredUsers.push(userData);
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+            const messageDiv = document.getElementById('registerMessage');
+            messageDiv.innerHTML = '<div class="success-message">✅ Реєстрація успішна! Тепер ви можете робити замовлення.</div>';
+            
+            event.target.reset();
+            
+            setTimeout(() => {
+                showMenu();
+                messageDiv.innerHTML = '';
+            }, 2000);
+        }
+
+        // Оформити замовлення
+        function placeOrder() {
+            if (cart.length === 0) {
+                alert('Кошик порожній!');
+                return;
+            }
+
+            if (registeredUsers.length === 0) {
+                alert('Будь ласка, спочатку зареєструйтеся!');
+                showRegister();
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const order = {
+                items: cart,
+                total: total,
+                user: registeredUsers[registeredUsers.length - 1],
+                orderDate: new Date().toISOString()
+            };
+
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            alert(`✅ Замовлення оформлено!\nВсього: ${total} ₴\nОчікуйте доставку за адресою: ${order.user.address}`);
+            
+            cart = [];
+            updateCart();
+        }
+
+        // Ініціалізація при завантаженні
+        init();
+    </script>
+</body>
+</html>
