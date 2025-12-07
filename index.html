@@ -3,102 +3,583 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FastFood Реєстрація</title>
-
+    <title>FastFood - Замовлення фастфуду</title>
     <style>
-        body { font-family: Arial; background:#f5f5f5; padding:20px; }
-        .container { max-width: 900px; margin:auto; }
-        .btn { padding:10px 20px; border:none; margin:5px; cursor:pointer; }
-        .btn-primary { background:#667eea; color:white; }
-        .btn-secondary { background:#ddd; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        .section { background:white; padding:20px; border-radius:10px; margin-top:20px; }
-        .hidden { display:none; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-        .menu-card { background:white; padding:15px; border-radius:10px; margin-bottom:10px; }
-        .menu-card h3 { margin:0 0 10px; }
-        
-        .form-group { margin-bottom:15px; }
-        label { display:block; margin-bottom:5px; }
-        input { width:100%; padding:10px; font-size:16px; border-radius:8px; border:1px solid #ccc; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-        .register-btn { background:#667eea; color:white; width:100%; padding:15px; border:none; border-radius:8px; font-size:18px; margin-top:15px; cursor:pointer; }
+        /* Головні блоки-кнопки */
+        .main-blocks {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .main-block {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .main-block:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .main-block-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .main-block-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .main-block-description {
+            font-size: 18px;
+            color: #666;
+        }
+
+        /* Контент секцій */
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: white;
+            color: #667eea;
+        }
+
+        /* Стилі для меню */
+        .menu-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .menu-item-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .menu-item h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .menu-item .price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 15px 0;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #5568d3;
+        }
+
+        .cart-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-price {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .quantity {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .cart-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .order-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .order-btn:hover {
+            background: #653a8a;
+            transform: translateY(-2px);
+        }
+
+        .order-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        /* Стилі для реєстрації */
+        .register-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .register-btn:hover {
+            background: #5568d3;
+        }
+
+        .success-message {
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .main-blocks {
+                grid-template-columns: 1fr;
+                margin-top: 30px;
+            }
+
+            .main-block {
+                padding: 40px 30px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
-
 <body>
-<div class="container">
+    <div class="container">
+        <!-- Головні блоки-кнопки -->
+        <div class="main-blocks" id="mainBlocks">
+            <div class="main-block" onclick="showMenuSection()">
+                <div class="main-block-icon">🍔</div>
+                <div class="main-block-title">Замовити фастфуд</div>
+                <div class="main-block-description">Переглянути меню та зробити замовлення</div>
+            </div>
+            <div class="main-block" onclick="showRegisterSection()">
+                <div class="main-block-icon">👤</div>
+                <div class="main-block-title">Реєстрація</div>
+                <div class="main-block-description">Зареєструватися для швидких замовлень</div>
+            </div>
+        </div>
 
-    <button class="btn btn-secondary" onclick="showMenu()">Меню</button>
-    <button class="btn btn-primary" onclick="showRegister()">Реєстрація</button>
+        <!-- Секція меню -->
+        <div class="content-section" id="menuSection">
+            <button class="back-button" onclick="showMainBlocks()">← Назад</button>
+            <div class="menu-section">
+                <h2 class="section-title">Наше меню</h2>
+                <div class="menu-grid" id="menuGrid"></div>
+            </div>
+            <div class="cart-section">
+                <h2 class="section-title">Кошик</h2>
+                <div id="cartItems">
+                    <div class="empty-cart">Кошик порожній</div>
+                </div>
+                <div class="cart-total hidden" id="cartTotal">
+                    <span>Всього:</span>
+                    <span id="totalPrice">0 ₴</span>
+                </div>
+                <button class="order-btn hidden" id="orderBtn" onclick="placeOrder()">Замовити</button>
+            </div>
+        </div>
 
-    <!-- ▶️ Меню -->
-    <div id="menuSection" class="section">
-        <h2>Меню</h2>
-        <div class="menu-card"><h3>🍔 Бургер — 120₴</h3></div>
-        <div class="menu-card"><h3>🍕 Піца — 180₴</h3></div>
-        <div class="menu-card"><h3>🥤 Кола — 40₴</h3></div>
+        <!-- Секція реєстрації -->
+        <div class="content-section" id="registerSection">
+            <button class="back-button" onclick="showMainBlocks()">← Назад</button>
+            <div class="register-section">
+                <h2 class="section-title">Реєстрація</h2>
+                <div id="registerMessage"></div>
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="name">Ім'я</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Телефон</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Адреса доставки</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <button type="submit" class="register-btn">Зареєструватися</button>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <!-- ▶️ Реєстрація -->
-    <div id="registerSection" class="section hidden">
-        <h2>Реєстрація</h2>
+    <script>
+        // Дані меню
+        const menuItems = [
+            { id: 1, name: 'Бургер класичний', price: 120, icon: '🍔' },
+            { id: 2, name: 'Чізбургер', price: 140, icon: '🧀' },
+            { id: 3, name: 'Картопля фрі', price: 60, icon: '🍟' },
+            { id: 4, name: 'Нагетси', price: 90, icon: '🍗' },
+            { id: 5, name: 'Піца Маргарита', price: 180, icon: '🍕' },
+            { id: 6, name: 'Кола', price: 40, icon: '🥤' },
+            { id: 7, name: 'Хот-дог', price: 80, icon: '🌭' },
+            { id: 8, name: 'Салат Цезар', price: 100, icon: '🥗' }
+        ];
 
-        <form id="registerForm" onsubmit="handleRegister(event)">
-            <div class="form-group">
-                <label>Імʼя</label>
-                <input type="text" id="name" name="name" required>
-            </div>
+        let cart = [];
+        let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" id="email" name="email" required>
-            </div>
+        // Отримуємо ім'я з URL (для Telegram WebApp)
+        const params = new URLSearchParams(window.location.search);
+        const tgName = params.get("name") || "";
+        if (tgName) {
+            document.addEventListener("DOMContentLoaded", () => {
+                const nameInput = document.getElementById("name");
+                if (nameInput) {
+                    nameInput.value = tgName;
+                }
+            });
+        }
 
-            <div class="form-group">
-                <label>Телефон</label>
-                <input type="tel" id="phone" name="phone" required>
-            </div>
+        // Показати головні блоки
+        function showMainBlocks() {
+            document.getElementById('mainBlocks').style.display = 'grid';
+            document.getElementById('menuSection').classList.remove('active');
+            document.getElementById('registerSection').classList.remove('active');
+        }
 
-            <button type="submit" class="register-btn">Зареєструватися</button>
-        </form>
-    </div>
+        // Показати секцію меню
+        function showMenuSection() {
+            document.getElementById('mainBlocks').style.display = 'none';
+            document.getElementById('menuSection').classList.add('active');
+            document.getElementById('registerSection').classList.remove('active');
+            renderMenu();
+            updateCart();
+        }
 
-</div>
+        // Показати секцію реєстрації
+        function showRegisterSection() {
+            document.getElementById('mainBlocks').style.display = 'none';
+            document.getElementById('registerSection').classList.add('active');
+            document.getElementById('menuSection').classList.remove('active');
+        }
 
-<script>
-    // ▶️ Отримуємо імʼя з URL
-    const params = new URLSearchParams(window.location.search);
-    const tgName = params.get("name") || "";
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("name").value = tgName;
-    });
+        // Відображення меню
+        function renderMenu() {
+            const menuGrid = document.getElementById('menuGrid');
+            menuGrid.innerHTML = menuItems.map(item => `
+                <div class="menu-item">
+                    <div class="menu-item-icon">${item.icon}</div>
+                    <h3>${item.name}</h3>
+                    <div class="price">${item.price} ₴</div>
+                    <button class="add-to-cart" onclick="addToCart(${item.id})">Додати до кошика</button>
+                </div>
+            `).join('');
+        }
 
-    // ▶️ Переключення секцій
-    function showMenu() {
-        document.getElementById("menuSection").classList.remove("hidden");
-        document.getElementById("registerSection").classList.add("hidden");
-    }
-    function showRegister() {
-        document.getElementById("menuSection").classList.add("hidden");
-        document.getElementById("registerSection").classList.remove("hidden");
-    }
+        // Додавання до кошика
+        function addToCart(itemId) {
+            const item = menuItems.find(i => i.id === itemId);
+            const existingItem = cart.find(i => i.id === itemId);
 
-    // ▶️ Відправка даних у Telegram WebApp
-    function handleRegister(event) {
-        event.preventDefault();
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
 
-        const data = {
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value
-        };
+            updateCart();
+        }
 
-        Telegram.WebApp.sendData(JSON.stringify(data));
-        Telegram.WebApp.close();
-    }
-</script>
+        // Оновлення кошика
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const orderBtn = document.getElementById('orderBtn');
+            const totalPrice = document.getElementById('totalPrice');
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<div class="empty-cart">Кошик порожній</div>';
+                cartTotal.classList.add('hidden');
+                orderBtn.classList.add('hidden');
+            } else {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">${item.price} ₴</div>
+                        </div>
+                        <div class="cart-item-controls">
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                `).join('');
+
+                const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                totalPrice.textContent = `${total} ₴`;
+                cartTotal.classList.remove('hidden');
+                orderBtn.classList.remove('hidden');
+            }
+        }
+
+        // Зміна кількості
+        function changeQuantity(itemId, change) {
+            const item = cart.find(i => i.id === itemId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== itemId);
+                }
+                updateCart();
+            }
+        }
+
+        // Обробка реєстрації
+        function handleRegister(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                address: formData.get('address'),
+                registeredAt: new Date().toISOString()
+            };
+
+            registeredUsers.push(userData);
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+
+            const messageDiv = document.getElementById('registerMessage');
+            messageDiv.innerHTML = '<div class="success-message">✅ Реєстрація успішна! Тепер ви можете робити замовлення.</div>';
+            
+            event.target.reset();
+            
+            // Якщо є Telegram WebApp, відправляємо дані
+            if (typeof Telegram !== 'undefined' && Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify(userData));
+            }
+        }
+
+        // Оформити замовлення
+        function placeOrder() {
+            if (cart.length === 0) {
+                alert('Кошик порожній!');
+                return;
+            }
+
+            if (registeredUsers.length === 0) {
+                alert('Будь ласка, спочатку зареєструйтеся!');
+                showRegisterSection();
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const order = {
+                items: cart,
+                total: total,
+                user: registeredUsers[registeredUsers.length - 1],
+                orderDate: new Date().toISOString()
+            };
+
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            orders.push(order);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            alert(`✅ Замовлення оформлено!\nВсього: ${total} ₴\nОчікуйте доставку за адресою: ${order.user.address}`);
+            
+            cart = [];
+            updateCart();
+        }
+    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </body>
 </html>
